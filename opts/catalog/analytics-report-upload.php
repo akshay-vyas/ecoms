@@ -3,13 +3,28 @@ include('dbconnect.php');
 include('verify.php');
 session_start();
 $user =$_SESSION['email'];
+if(isset($_GET['submit']))
+{
+  $product_id = check($_GET['product_id']);
+  $category_id = check($_GET['category_id']);
+  $subcategory_id = check($_GET['subcategory_id']);
+  
 
-$product_id = $_REQUEST['product_id'];
+  $assign_insert= "insert into assign_product values(null,'$product_id','$category_id','$subcategory_id')";
+  
+
+  //echo $product_insert;
+
+  $insert = mysqli_query($conn,$assign_insert);
 
 
-$view_query = "select * from seller_registration s,product_details p where s.seller_email=p.product_owner and p.product_id = '$product_id'";
-  //echo $view_query;
-  //echo "Sd";
+    //echo "fsdasd";
+    header('Location: assign-product.php');
+  
+}
+
+$view_query = "select * from product_details p, images i where p.product_id = i.product_id";
+  
   $view = mysqli_query($conn,$view_query);
 
 
@@ -56,6 +71,7 @@ $view_query = "select * from seller_registration s,product_details p where s.sel
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 </head>
 
 
@@ -89,203 +105,59 @@ $view_query = "select * from seller_registration s,product_details p where s.sel
 
     <section class="content">
     <!-- body part-->
-  <div class="row">
     
-        <div class="col-md-3">
 
-          <!-- Profile Image -->
-          
-          <!-- About Me Box -->
-          <div class="box box-primary">
-             <?php   while($row=mysqli_fetch_assoc($view)) {  ?>
-              <div class="box-header with-border">
-              <h3 class="box-title">Product Detail</h3>
-            </div>
-    
-            
-            <!-- /.box-header -->
-      
-            <div class="box-body">
-     
-      <input type="hidden" name="id11" id="" value="<?php echo $row['product_id'];  ?>">
-              <strong><i class="fa fa-book margin-r-5"></i> Name</strong>
-
-              <p class="text-muted">
-               <?php echo $row['product_name'];  ?>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Quantity</strong>
-
-              <p class="text-muted"><?php echo $row['product_quantity'];  ?></p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Location</strong>
-        <p class="text-muted"><?php echo $row['product_location'];  ?></p>
-              
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Dimension</strong>
-
-              <p><?php echo $row['product_dimension'];  ?></p>
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Color</strong>
-
-              <p ><?php echo $row['product_color'];  ?></p>
-
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
-<div class="col-md-3">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><?php echo $row['product_name'];?></h3>
-            </div>
-    
-           
-            <!-- /.box-header -->
-      
-            <div class="box-body">
-      
-      <input type="hidden" name="id11" id="" value="<?php echo $row['product_id'];  ?>">
-
-              <strong><i class="fa fa-book margin-r-5"></i> SKU</strong>
-
-              <p class="text-muted">
-               <?php echo $row['product_sku'];  ?>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> OEM</strong>
-
-              <p class="text-muted"><?php echo $row['product_oem'];  ?></p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Model</strong>
-        <p class="text-muted"><?php echo $row['product_model'];  ?></p>
-              
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Design</strong>
-
-              <p><?php echo $row['product_design'];  ?></p>
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Material</strong>
-
-              <p ><?php echo $row['product_material'];  ?></p>
-
-            </div>
-            <!-- /.box-body -->
-          </div>
-          </div>
-
-          <div class="col-md-3">
-          <div class="box box-primary">
-    
-            <div class="box-body">
-               <div class="box-header with-border">
-              <h3 class="box-title">Owner:<?php echo "  ".$row['seller_name'];  ?></h3>
-            </div>
-      
-      <input type="hidden" name="id11" id="" value="<?php echo $row['product_id'];  ?>">
-              <strong><i class="fa fa-book margin-r-5"></i> Series</strong>
-
-              <p class="text-muted">
-               <?php echo $row['product_series'];  ?>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Note</strong>
-
-              <p class="text-muted"><?php echo $row['product_note'];  ?></p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Part Number</strong>
-        <p class="text-muted"><?php echo $row['product_part_number'];  ?></p>
-              
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Part Brand</strong>
-
-              <p><?php echo $row['product_part_brand'];  ?></p>
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Vehicle Brand</strong>
-
-              <p ><?php echo $row['product_vechicle_brand'];  ?></p>
-
-            </div>
-            <!-- /.box-body -->
-          </div>
-          </div>
-          <?php
-        }
-        ?>
-      
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
         
-      
-        <!-- /.col -->
-      
-        <div class="timeline-item">
-           
+          
+            
+              
 
-                <h3 class="timeline-header"><a href="#">Uploaded photos</a> </h3>
+              
+              <!-- /.tab-pane -->
+             
+              <!-- /.tab-pane -->
 
-                <div class="timeline-body">
-                   <?php 
-                $show_img = "select * from images i where i.product_id = '$product_id'";
-                  $view_img = mysqli_query($conn,$show_img);
-                  
-                  
-                  while($imgs = mysqli_fetch_assoc($view_img))
-                  {
-                    ?>
-                  <img src="<?php echo 'uploads/'.$imgs['image_name'];?>" alt="..." class="margin" height="100" width="150">
-                  <?php
-                }
-                ?>
-                  
+              
+
+
+                <div class="box-body">
+               <form role="form" method="POST" action="upload.php" enctype="multipart/form-data">
+
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Product Name</label>
+                  <select name="product_id">
+                    <?php 
+                    $product = mysqli_query($conn,"select product_id,product_name from product_details where product_status = 'verified'");
+                    while($product_row = mysqli_fetch_assoc($product))
+                    {
+                      ?>
+                    <option value="<?php echo $product_row['product_id'];?>"><?php echo $product_row['product_name'];?></option>
+                    <?php
+                  }
+                  ?>
+                    
+                  </select>
                 </div>
 
-              </div>
-
-              <div class="timeline-item">
-           
-
-                <h3 class="timeline-header"><a href="#">Analytics Report</a> </h3>
-
-                <div class="timeline-body">
-                   <?php 
-                $show_img = "select * from analytics_report a where a.product_id = '$product_id'";
-                  $view_img = mysqli_query($conn,$show_img);
-                  
-                  
-                  while($imgs = mysqli_fetch_assoc($view_img))
-                  {
-                    ?>
-                  <img src="<?php echo 'analytics-report/'.$imgs['analytic_name'];?>" alt="..." class="margin" height="100" width="150">
-                  <?php
-                }
-                ?>
-                  
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Category Name</label>
+                  <input type="file" class="form-control" name="file">
                 </div>
 
+               
+                
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" name="analytics" value="analytics" class="btn btn-primary">Submit</button>
               </div>
+            </form>
+              </div>
+              <!-- /.tab-pane -->
+           
+            <!-- /.tab-content -->
+        
+      </div>
     </section>
 
     
@@ -528,5 +400,27 @@ $view_query = "select * from seller_registration s,product_details p where s.sel
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script>
+function getSubcategory(val) {
+  $.ajax({
+  type: "GET",
+  url: "ajax-subcategory.php",
+  data:'category_id='+val,
+  success: function(data){
+    $("#subcategory-list").html(data);
+  }
+  });
+}
+
+function selectCountry(val) {
+$("#search-box").val(val);
+$("#suggesstion-box").hide();
+}
+</script>
 </body>
 </html>

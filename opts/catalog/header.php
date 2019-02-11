@@ -347,6 +347,7 @@ $details = mysqli_query($conn,$details);
             <li><a href="product_pending.php"><i class="fa fa-circle-o"></i>Pending</a></li>
             <li><a href="product_verify.php"><i class="fa fa-circle-o"></i>Not Verified</a></li>
             <li><a href="image-upload.php"><i class="fa fa-calendar"></i> <span>Add Images</span></a></li>
+            <li><a href="analytics-report-upload.php"><i class="fa fa-calendar"></i> <span>Add Analytics Report</span></a></li>
           </ul>
         </li>
         
